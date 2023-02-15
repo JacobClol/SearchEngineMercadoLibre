@@ -1,60 +1,128 @@
 package com.example.searchenginemercadolibre.ui.fragment
 
 import android.os.Bundle
+import android.view.*
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.searchenginemercadolibre.R
+import com.example.searchenginemercadolibre.databinding.FragmentSearchBinding
+import com.example.searchenginemercadolibre.ui.adapter.ItemListAdapter
+import com.example.searchenginemercadolibre.ui.models.ItemView
+import com.example.searchenginemercadolibre.ui.viewmodel.SearchViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+@AndroidEntryPoint
+class SearchFragment : Fragment(), ItemListAdapter.OnItemClickListener {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SearchFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class SearchFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private val viewModel by viewModels<SearchViewModel>()
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var adapter: ItemListAdapter
+    private val listItem = mutableListOf<ItemView>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false)
+    ): View {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SearchFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SearchFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initToolbar()
+        initMenuProvider()
+        setUpRecyclerView()
+        setDataInit()
+    }
+
+    override fun onItemClick(item: ItemView) {
+        val action = SearchFragmentDirections.actionSearchFragmentToDetailProductFragment(item)
+        findNavController().navigate(action)
+    }
+
+    private fun initToolbar() {
+        val navCollection = findNavController()
+        val appBarConfiguration = AppBarConfiguration(navCollection.graph)
+        binding.toolbarSearch.setupWithNavController(navCollection, appBarConfiguration)
+    }
+
+    private fun initMenuProvider() {
+        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.search_menu, menu)
+                val searchItem = menu.findItem(R.id.toolbarSearch)
+                val searchView = searchItem.actionView as SearchView
+                searchView.queryHint = getString(R.string.buscar_en_mercado_libre)
+                searchView.setOnCloseListener { true }
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(query: String?): Boolean {
+                        return false
+                    }
+
+                    override fun onQueryTextChange(newText: String?): Boolean {
+                        if (!newText.isNullOrEmpty()) {
+                            val action =
+                                SearchFragmentDirections.actionSearchFragmentToListProductsFragment(newText)
+                            findNavController().navigate(action)
+                        } else {
+                            Toast.makeText(requireContext(), getString(R.string.empy_query_search), Toast.LENGTH_SHORT).show()
+                        }
+                        return true
+                    }
+                })
             }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return false
+            }
+
+        }, viewLifecycleOwner)
+    }
+
+    private fun setUpRecyclerView() {
+        adapter = ItemListAdapter(requireContext(), listItem, this)
+        binding.rvListLastSearch.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvListLastSearch.adapter = adapter
+    }
+
+    private fun setDataInit(){
+        Glide.with(requireContext()).load("https://loremflickr.com/320/240/dog").placeholder(R.drawable.load).into(binding.ivBanner)
+        val lastSearch = "Motorola%20G6"
+        if(lastSearch != null){
+            viewModel.fetchItemList(lastSearch)
+
+            viewModel.itemList.observe(viewLifecycleOwner, Observer {
+                listItem.clear()
+                listItem.addAll(it)
+                adapter.notifyDataSetChanged()
+            })
+
+            viewModel.totalItemsResponse.observe(viewLifecycleOwner, Observer {
+                val totalResultSubtitle = "$it Favoritos"
+                binding.tvSubtitle.text = totalResultSubtitle
+            })
+
+            viewModel.isLoading.observe(viewLifecycleOwner, Observer {
+                binding.progressBar.isVisible = it
+            })
+
+            viewModel.error.observe(viewLifecycleOwner, Observer {
+                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+            })
+        } else {
+            binding.tvSubtitle.text = getString(R.string.no_tiene_favoritos)
+        }
     }
 }

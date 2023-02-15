@@ -1,7 +1,7 @@
 package com.example.searchenginemercadolibre.di
 
 import com.example.searchenginemercadolibre.domain.repositories.ItemRepository
-import com.example.searchenginemercadolibre.domain.usecases.GetItemBySearch
+import com.example.searchenginemercadolibre.domain.usecases.GetItemBySearchUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -16,5 +16,5 @@ class UseCaseModule {
     @Reusable
     fun provideGetComicsByHeroUseCase(
         itemRepository: ItemRepository
-    ) = GetItemBySearch(itemRepository)
+    ) = GetItemBySearchUseCase(itemRepository)
 }

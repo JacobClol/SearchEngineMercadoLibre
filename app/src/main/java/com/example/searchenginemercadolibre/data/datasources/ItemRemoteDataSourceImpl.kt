@@ -11,7 +11,7 @@ class ItemRemoteDataSourceImpl @Inject constructor(
     override suspend fun getRemoteItemsBySearch(params: ItemsParams): APIItemResponse {
         return searchItemsService.getItems(
             params.siteId,
-            params.reseach
+            params.query
         )
     }
 }

@@ -17,6 +17,13 @@
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+        <action
+            android:id="@+id/action_searchFragment_to_detailProductFragment"
+            app:destination="@id/detailProductFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
     </fragment>
     <fragment
         android:id="@+id/listProductsFragment"
@@ -44,7 +51,7 @@
         app:popEnterAnim="@anim/slide_in_left"
         app:popExitAnim="@anim/slide_out_right">
         <argument
-            android:name="Item"
-            app:argType="com.example.searchenginemercadolibre.domain.models.Item" />
+            android:name="item"
+            app:argType="com.example.searchenginemercadolibre.ui.models.ItemView" />
     </fragment>
 </navigation>

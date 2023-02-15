@@ -4,7 +4,7 @@
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/yellow_500</item>
         <item name="colorPrimaryVariant">@color/yellow_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnPrimary">#393939</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
@@ -13,14 +13,15 @@
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
-    <style name="Theme.MarvelComicsList.NoActionBar" parent="Theme.SearchEngineMercadoLibre">
+    <style name="Theme.SearchEngineMercadoLibre.NoActionBar" parent="Theme.SearchEngineMercadoLibre">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-    <style name="Theme.MarvelComicsList.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-    <style name="Theme.MarvelComicsList.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-    <style name="SplashTheme" parent="Theme.MarvelComicsList.NoActionBar">
-        <item name="android:windowBackground">@drawable/screen</item>
+    <style name="Theme.SearchEngineMercadoLibre.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="Theme.SearchEngineMercadoLibre.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="SplashTheme" parent="Theme.SearchEngineMercadoLibre.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:screenOrientation">portrait</item>
     </style>
 </resources>

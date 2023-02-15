@@ -1,17 +1,31 @@
 package com.example.searchenginemercadolibre.domain.models
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import com.example.searchenginemercadolibre.ui.models.AttributesView
+import com.example.searchenginemercadolibre.ui.models.ItemView
+import com.example.searchenginemercadolibre.ui.models.ResponseView
 
 data class ItemModel(
-    val query: String, val siteId: String, val totalResults: Int, val items: List<Item>
-)
+    val query: String,
+    val siteId: String,
+    val totalResults: Int,
+    val items: List<Item>
+) {
+    fun toResponseView(): ResponseView {
+        return ResponseView(
+            query = query,
+            siteId = siteId,
+            totalResults = totalResults,
+            itemsList = items.map {
+                it.toItemView()
+            }
+        )
+    }
+}
 
-@Parcelize
 data class Item(
     val itemId: String,
     val title: String,
-    val sellerStaus: String,
+    val sellerStaus: String?,
     val price: Int,
     val currencyId: String,
     val availableQuantity: Int,
@@ -24,11 +38,40 @@ data class Item(
     val countrySellerName: String,
     val attributes: List<Attributes>,
     val categoryId: String
-) : Parcelable
+) {
+    fun toItemView(): ItemView {
+        return ItemView(
+            itemId = itemId,
+            title = title,
+            sellerStaus = sellerStaus,
+            price = price,
+            currencyId = currencyId,
+            availableQuantity = availableQuantity,
+            soldQuantity = soldQuantity,
+            condition = condition,
+            thumbnail = thumbnail,
+            cityName = cityName,
+            stateName = stateName,
+            freeShipping = freeShipping,
+            countrySellerName = countrySellerName,
+            attributes = attributes.map {
+                it.toAttributeView()
+            },
+            categoryId = categoryId
+        )
+    }
+}
 
-@Parcelize
 data class Attributes(
     val id: String,
-    val name: String,
-    val valueName: String,
-) : Parcelable
+    val name: String?,
+    val valueName: String?,
+) {
+    fun toAttributeView(): AttributesView {
+        return AttributesView(
+            id = id,
+            name = name,
+            valueName = valueName
+        )
+    }
+}

@@ -4,4 +4,10 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="item_search">Item search</string>
     <string name="envio_gratis">Envio gratis</string>
+    <string name="ultima_busqueda">Última busqueda</string>
+    <string name="buscar_en_mercado_libre">Buscar en mercado libre</string>
+    <string name="search">Search</string>
+    <string name="asd">Buscar en Mercado Libre</string>
+    <string name="no_tiene_favoritos">No tiene favoritos</string>
+    <string name="empy_query_search">No ha escrito una busqueda.</string>
 </resources>

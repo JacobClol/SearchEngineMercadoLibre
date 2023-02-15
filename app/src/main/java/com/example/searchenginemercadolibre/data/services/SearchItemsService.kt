@@ -10,7 +10,7 @@ interface SearchItemsService {
     @GET("sites/{SITE_ID}/search")
     suspend fun getItems(
         @Path("SITE_ID") name: String,
-        @Query("search") search: String
+        @Query("q") query: String
     ): APIItemResponse
 
 }

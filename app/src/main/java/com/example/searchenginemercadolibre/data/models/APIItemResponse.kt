@@ -49,25 +49,25 @@ data class Result(
     val condition: String,
     @SerializedName("currency_id")
     val currencyId: String,
-    val discounts: Any,
+    val discounts: String?,
     val domain_id: String,
     val id: String,
     val installments: Installments,
     @SerializedName("inventory_id")
-    val inventoryId: Any,
+    val inventoryId: String?,
     @SerializedName("listing_type_id")
     val listingTypeId: String,
     @SerializedName("officialStoreId")
-    val official_store_id: Any,
+    val official_store_id: String?,
     @SerializedName("orderBackend")
     val order_backend: Int,
     @SerializedName("original_price")
-    val originalPrice: Any,
+    val originalPrice: String?,
     val permalink: String,
     val price: Int,
-    val promotions: Any,
-    @SerializedName("original_price")
-    val sale_price: Any,
+    val promotions: String?,
+    @SerializedName("sale_price")
+    val salePrice: String?,
     val seller: Seller,
     val seller_address: SellerAddress,
     val shipping: Shipping,
@@ -85,7 +85,7 @@ data class Result(
     @SerializedName("use_thumbnail_id")
     val useThumbnailId: Boolean,
     @SerializedName("winner_item_id")
-    val winnerItemId: Any
+    val winnerItemId: String?
 ) {
     fun toItems(): Item {
         return Item(
@@ -97,7 +97,7 @@ data class Result(
             availableQuantity = availableQuantity,
             soldQuantity = soldQuantity,
             condition = condition,
-            thumbnail = thumbnail,
+            thumbnail = thumbnail.replace("http:", "https:"),
             cityName = address.city_name,
             stateName = address.state_name,
             freeShipping = shipping.freeShipping,
@@ -123,15 +123,15 @@ data class Attribute(
     @SerializedName("attribute_group_name")
     val attributeGroupName: String,
     val id: String,
-    val name: String,
-    val source: Int,
-    @SerializedName("winner_item_id")
+    val name: String?,
+    val source: String,
+    @SerializedName("value_id")
     val valueId: String,
-    @SerializedName("winner_item_id")
-    val valueName: String,
-    @SerializedName("winner_item_id")
-    val valueStruct: Any,
-    @SerializedName("winner_item_id")
+    @SerializedName("value_name")
+    val valueName: String?,
+    @SerializedName("value_struct")
+    val valueStruct: Any?,
+    @SerializedName("value_type")
     val valueType: String,
     val values: List<Value>
 ) {
@@ -165,7 +165,7 @@ data class Seller(
     val registration_date: String,
     @SerializedName("seller_reputation")
     val sellerReputation: SellerReputation,
-    val tags: List<String>
+    val tags: List<String>?
 )
 
 data class SellerAddress(
@@ -174,9 +174,9 @@ data class SellerAddress(
     val city: City,
     val comment: String,
     val country: Country,
-    val id: Any,
-    val latitude: Any,
-    val longitude: Any,
+    val id: String?,
+    val latitude: String?,
+    val longitude: String?,
     val state: State,
     @SerializedName("zip_code")
     val zipCode: String
@@ -188,7 +188,7 @@ data class Shipping(
     @SerializedName("logistic_type")
     val logisticType: String,
     val mode: String,
-    val promise: Any,
+    val promise: String?,
     @SerializedName("store_pick_up")
     val storePickUp: Boolean,
     val tags: List<String>
@@ -196,9 +196,9 @@ data class Shipping(
 
 data class Value(
     val id: String,
-    val name: String,
-    val source: Int,
-    val struct: Any
+    val name: String?,
+    val source: String,
+    val struct: Any?
 )
 
 data class SellerReputation(
@@ -206,7 +206,7 @@ data class SellerReputation(
     val levelId: String,
     val metrics: Metrics,
     @SerializedName("power_seller_status")
-    val sellerStatus: String,
+    val sellerStatus: String?,
     val transactions: Transactions
 )
 
