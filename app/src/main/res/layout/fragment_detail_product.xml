@@ -31,7 +31,7 @@
         tools:text="# Resultados" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/ivBanner"
+        android:id="@+id/ivPhotos"
         android:layout_width="0dp"
         android:layout_height="200dp"
         android:layout_marginStart="10dp"
@@ -54,7 +54,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivBanner"
+        app:layout_constraintTop_toBottomOf="@id/ivPhotos"
         tools:text="# Resultados" />
 
     <androidx.appcompat.widget.AppCompatTextView

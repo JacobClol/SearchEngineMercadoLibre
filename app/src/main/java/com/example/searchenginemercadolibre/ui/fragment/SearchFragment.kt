@@ -71,10 +71,10 @@ class SearchFragment : Fragment(), ItemListAdapter.OnItemClickListener {
                         return false
                     }
 
-                    override fun onQueryTextChange(newText: String?): Boolean {
-                        if (!newText.isNullOrEmpty()) {
+                    override fun onQueryTextChange(query: String?): Boolean {
+                        if (!query.isNullOrEmpty()) {
                             val action =
-                                SearchFragmentDirections.actionSearchFragmentToListProductsFragment(newText)
+                                SearchFragmentDirections.actionSearchFragmentToListProductsFragment(query)
                             findNavController().navigate(action)
                         } else {
                             Toast.makeText(requireContext(), getString(R.string.empy_query_search), Toast.LENGTH_SHORT).show()

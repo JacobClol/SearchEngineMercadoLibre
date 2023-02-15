@@ -31,10 +31,10 @@ class SearchViewModel @Inject constructor(
             if (response.itemsList.isNotEmpty()) {
                 itemList.postValue(response.itemsList)
                 totalItemsResponse.postValue(response.totalResults.toString())
-                isLoading.postValue(false)
             } else {
                 error.postValue("No se encontró items para la busqueda")
             }
+            isLoading.postValue(false)
         }
     }
 }
