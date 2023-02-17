@@ -1,5 +1,5 @@
 package com.example.searchenginemercadolibre.domain.models
 
-data class ItemsParams(
+data class ItemParams(
     val siteId: String = "MCO", val query: String
 )

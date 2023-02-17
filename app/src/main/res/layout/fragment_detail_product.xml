@@ -7,7 +7,7 @@
     tools:context=".ui.fragment.DetailProductFragment">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarSearch"
+        android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/yellow_500"
@@ -15,6 +15,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvTitleItem"
@@ -27,7 +38,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbarSearch"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
         tools:text="# Resultados" />
 
     <androidx.appcompat.widget.AppCompatImageView

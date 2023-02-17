@@ -52,6 +52,6 @@
         app:popExitAnim="@anim/slide_out_right">
         <argument
             android:name="item"
-            app:argType="com.example.searchenginemercadolibre.ui.models.ItemView" />
+            app:argType="com.example.searchenginemercadolibre.domain.models.Item" />
     </fragment>
 </navigation>

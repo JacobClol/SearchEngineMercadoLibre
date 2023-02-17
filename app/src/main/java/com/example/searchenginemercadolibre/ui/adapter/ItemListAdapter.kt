@@ -9,17 +9,17 @@ import com.bumptech.glide.Glide
 import com.example.searchenginemercadolibre.R
 import com.example.searchenginemercadolibre.core.BaseViewHolder
 import com.example.searchenginemercadolibre.databinding.ItemSearchBinding
-import com.example.searchenginemercadolibre.ui.models.ItemView
+import com.example.searchenginemercadolibre.domain.models.Item
 import java.text.DecimalFormat
 
 class ItemListAdapter(
     private val context: Context,
-    private val listItems: List<ItemView>,
+    private val listItems: List<Item>,
     private val itemCLickListener: OnItemClickListener
 ) : RecyclerView.Adapter<BaseViewHolder<*>>() {
 
     interface OnItemClickListener {
-        fun onItemClick(item: ItemView)
+        fun onItemClick(item: Item)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<*> {
@@ -40,12 +40,12 @@ class ItemListAdapter(
     override fun getItemCount(): Int = listItems.size
 
     inner class ItemViewHolder(private val binding: ItemSearchBinding) :
-        BaseViewHolder<ItemView>(binding.root) {
-        override fun bind(item: ItemView): Unit = with(binding) {
+        BaseViewHolder<Item>(binding.root) {
+        override fun bind(item: Item): Unit = with(binding) {
             Glide.with(context).load(item.thumbnail).placeholder(R.drawable.load).into(thumbnail)
             tvTitle.text = item.title
             val doublePrice = item.price.toDouble()
-            val formatter = DecimalFormat("#,###.00")
+            val formatter = DecimalFormat("#,###")
             val price = "$ ${formatter.format(doublePrice)}"
             tvPrice.text = price
             tvCondition.text = item.condition

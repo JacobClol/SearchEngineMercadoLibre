@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -17,8 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.searchenginemercadolibre.R
 import com.example.searchenginemercadolibre.databinding.FragmentSearchBinding
+import com.example.searchenginemercadolibre.domain.models.Item
 import com.example.searchenginemercadolibre.ui.adapter.ItemListAdapter
-import com.example.searchenginemercadolibre.ui.models.ItemView
 import com.example.searchenginemercadolibre.ui.viewmodel.SearchViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,7 +28,7 @@ class SearchFragment : Fragment(), ItemListAdapter.OnItemClickListener {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: ItemListAdapter
-    private val listItem = mutableListOf<ItemView>()
+    private val listItem = mutableListOf<Item>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +46,7 @@ class SearchFragment : Fragment(), ItemListAdapter.OnItemClickListener {
         setDataInit()
     }
 
-    override fun onItemClick(item: ItemView) {
+    override fun onItemClick(item: Item) {
         val action = SearchFragmentDirections.actionSearchFragmentToDetailProductFragment(item)
         findNavController().navigate(action)
     }
@@ -59,27 +58,33 @@ class SearchFragment : Fragment(), ItemListAdapter.OnItemClickListener {
     }
 
     private fun initMenuProvider() {
-        (requireActivity() as MenuHost).addMenuProvider(object : MenuProvider {
+        val menuProvider = object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.search_menu, menu)
-                val searchItem = menu.findItem(R.id.toolbarSearch)
-                val searchView = searchItem.actionView as SearchView
-                searchView.queryHint = getString(R.string.buscar_en_mercado_libre)
+                val searchItem = menu.findItem(R.id.app_bar_search)
+                val searchView: SearchView = searchItem.actionView as SearchView
+                searchView.queryHint = getString(R.string.search_in_mercado_libre)
                 searchView.setOnCloseListener { true }
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        return false
+                        if (!query.isNullOrEmpty()) {
+                            val action =
+                                SearchFragmentDirections.actionSearchFragmentToListProductsFragment(
+                                    query
+                                )
+                            findNavController().navigate(action)
+                        } else {
+                            Toast.makeText(
+                                requireContext(),
+                                getString(R.string.empy_query_search),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        return true
                     }
 
                     override fun onQueryTextChange(query: String?): Boolean {
-                        if (!query.isNullOrEmpty()) {
-                            val action =
-                                SearchFragmentDirections.actionSearchFragmentToListProductsFragment(query)
-                            findNavController().navigate(action)
-                        } else {
-                            Toast.makeText(requireContext(), getString(R.string.empy_query_search), Toast.LENGTH_SHORT).show()
-                        }
-                        return true
+                        return false
                     }
                 })
             }
@@ -88,7 +93,8 @@ class SearchFragment : Fragment(), ItemListAdapter.OnItemClickListener {
                 return false
             }
 
-        }, viewLifecycleOwner)
+        }
+        binding.toolbarSearch.addMenuProvider(menuProvider, viewLifecycleOwner)
     }
 
     private fun setUpRecyclerView() {
@@ -97,32 +103,33 @@ class SearchFragment : Fragment(), ItemListAdapter.OnItemClickListener {
         binding.rvListLastSearch.adapter = adapter
     }
 
-    private fun setDataInit(){
-        Glide.with(requireContext()).load("https://loremflickr.com/320/240/dog").placeholder(R.drawable.load).into(binding.ivBanner)
-        val lastSearch = "Motorola%20G6"
-        if(lastSearch != null){
-            viewModel.fetchItemList(lastSearch)
+    private fun setDataInit() {
+        Glide.with(requireContext()).load("https://loremflickr.com/320/240/dog")
+            .placeholder(R.drawable.load).into(binding.ivBanner)
 
-            viewModel.itemList.observe(viewLifecycleOwner, Observer {
-                listItem.clear()
-                listItem.addAll(it)
-                adapter.notifyDataSetChanged()
-            })
+        viewModel.getItemFromDataBase()
 
-            viewModel.totalItemsResponse.observe(viewLifecycleOwner, Observer {
+        viewModel.itemList.observe(viewLifecycleOwner, Observer {
+            listItem.clear()
+            listItem.addAll(it)
+            adapter.notifyDataSetChanged()
+        })
+
+        viewModel.totalItemsResponse.observe(viewLifecycleOwner, Observer {
+            if (it.equals("0")){
+                binding.tvSubtitle.text = getString(R.string.without_favorites)
+            } else {
                 val totalResultSubtitle = "$it Favoritos"
                 binding.tvSubtitle.text = totalResultSubtitle
-            })
+            }
+        })
 
-            viewModel.isLoading.observe(viewLifecycleOwner, Observer {
-                binding.progressBar.isVisible = it
-            })
+        viewModel.isLoading.observe(viewLifecycleOwner, Observer {
+            binding.progressBar.isVisible = it
+        })
 
-            viewModel.error.observe(viewLifecycleOwner, Observer {
-                Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-            })
-        } else {
-            binding.tvSubtitle.text = getString(R.string.no_tiene_favoritos)
-        }
+        viewModel.error.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
+        })
     }
 }

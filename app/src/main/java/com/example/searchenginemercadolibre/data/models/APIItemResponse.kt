@@ -1,6 +1,6 @@
 package com.example.searchenginemercadolibre.data.models
 
-import com.example.searchenginemercadolibre.domain.models.Attributes
+import com.example.searchenginemercadolibre.domain.models.AttributesModel
 import com.example.searchenginemercadolibre.domain.models.Item
 import com.example.searchenginemercadolibre.domain.models.ItemModel
 import com.google.gson.annotations.SerializedName
@@ -52,18 +52,6 @@ data class Result(
     val discounts: String?,
     val domain_id: String,
     val id: String,
-    val installments: Installments,
-    @SerializedName("inventory_id")
-    val inventoryId: String?,
-    @SerializedName("listing_type_id")
-    val listingTypeId: String,
-    @SerializedName("officialStoreId")
-    val official_store_id: String?,
-    @SerializedName("orderBackend")
-    val order_backend: Int,
-    @SerializedName("original_price")
-    val originalPrice: String?,
-    val permalink: String,
     val price: Int,
     val promotions: String?,
     @SerializedName("sale_price")
@@ -77,7 +65,7 @@ data class Result(
     val soldQuantity: Int,
     @SerializedName("stop_time")
     val stopTime: String,
-    val tags: List<String>,
+    val tags: List<String>?,
     val thumbnail: String,
     @SerializedName("thumbnail_id")
     val thumbnailId: String,
@@ -91,7 +79,7 @@ data class Result(
         return Item(
             itemId = id,
             title = title,
-            sellerStaus = seller.sellerReputation.sellerStatus,
+            sellerStatus = seller.sellerReputation.sellerStatus,
             price = price,
             currencyId = currencyId,
             availableQuantity = availableQuantity,
@@ -103,7 +91,7 @@ data class Result(
             freeShipping = shipping.freeShipping,
             countrySellerName = seller_address.country.name,
             attributes = attributes.map {
-                it.toAttributes()
+                it.toAttributesModel()
             },
             categoryId = categoryId
         )
@@ -129,14 +117,11 @@ data class Attribute(
     val valueId: String,
     @SerializedName("value_name")
     val valueName: String?,
-    @SerializedName("value_struct")
-    val valueStruct: Any?,
     @SerializedName("value_type")
-    val valueType: String,
-    val values: List<Value>
+    val valueType: String
 ) {
-    fun toAttributes(): Attributes {
-        return Attributes(
+    fun toAttributesModel(): AttributesModel {
+        return AttributesModel(
             id = id,
             name = name,
             valueName = valueName
@@ -171,13 +156,11 @@ data class Seller(
 data class SellerAddress(
     @SerializedName("address_line")
     val addressLine: String,
-    val city: City,
     val comment: String,
     val country: Country,
     val id: String?,
     val latitude: String?,
     val longitude: String?,
-    val state: State,
     @SerializedName("zip_code")
     val zipCode: String
 )
@@ -204,10 +187,8 @@ data class Value(
 data class SellerReputation(
     @SerializedName("level_id")
     val levelId: String,
-    val metrics: Metrics,
     @SerializedName("power_seller_status")
-    val sellerStatus: String?,
-    val transactions: Transactions
+    val sellerStatus: String?
 )
 
 data class Metrics(

@@ -16,9 +16,9 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/thumbnail"
             android:layout_width="120dp"
-            android:layout_height="160dp"
+            android:layout_height="150dp"
             android:contentDescription="@string/item_search"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/load" />
@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
-            android:text="@string/envio_gratis"
+            android:text="@string/free_shipping"
             android:textColor="@color/teal_700"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/thumbnail"

@@ -1,5 +1,7 @@
 package com.example.searchenginemercadolibre.di
 
+import com.example.searchenginemercadolibre.data.datasources.ItemDataBaseDataSource
+import com.example.searchenginemercadolibre.data.datasources.ItemDataBaseDataSourceImpl
 import com.example.searchenginemercadolibre.data.datasources.ItemRemoteDataSource
 import com.example.searchenginemercadolibre.data.datasources.ItemRemoteDataSourceImpl
 import dagger.Binds
@@ -17,4 +19,10 @@ abstract class DataSourceModule {
     abstract fun bindItemRemoteDatasource(
         itemRemoteDataSourceImpl: ItemRemoteDataSourceImpl
     ): ItemRemoteDataSource
+
+    @Binds
+    @Reusable
+    abstract fun bindItemDataBaseSource(
+        itemDataBaseDataSourceImpl: ItemDataBaseDataSourceImpl
+    ): ItemDataBaseDataSource
 }

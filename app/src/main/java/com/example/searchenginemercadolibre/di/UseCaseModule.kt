@@ -1,7 +1,7 @@
 package com.example.searchenginemercadolibre.di
 
 import com.example.searchenginemercadolibre.domain.repositories.ItemRepository
-import com.example.searchenginemercadolibre.domain.usecases.GetItemBySearchUseCase
+import com.example.searchenginemercadolibre.domain.usecases.*
 import dagger.Module
 import dagger.Provides
 import dagger.Reusable
@@ -14,7 +14,40 @@ class UseCaseModule {
 
     @Provides
     @Reusable
-    fun provideGetComicsByHeroUseCase(
+    fun provideGetComicsByHeroFromApiUseCase(
         itemRepository: ItemRepository
-    ) = GetItemBySearchUseCase(itemRepository)
+    ) = GetItemBySearchFromApiUseCase(itemRepository)
+
+    @Provides
+    @Reusable
+    fun privideInsertItemToDataBase(
+        itemRepository: ItemRepository,
+        insertAttributeDataBaseUseCase: InsertAttributeDataBaseUseCase
+    ) = InsertItemDataBaseUseCase(itemRepository, insertAttributeDataBaseUseCase)
+
+    @Provides
+    @Reusable
+    fun privideDeteleItemToDataBase(
+        itemRepository: ItemRepository,
+        deleteAttributeDataBaseUseCase: DeleteAttributeDataBaseUseCase
+    ) = DeleteItemDataBaseUseCase(itemRepository, deleteAttributeDataBaseUseCase)
+
+    @Provides
+    @Reusable
+    fun privideDeteleAttributeToDataBase(
+        itemRepository: ItemRepository
+    ) = DeleteAttributeDataBaseUseCase(itemRepository)
+
+    @Provides
+    @Reusable
+    fun privideInsertAttributeToDataBase(
+        itemRepository: ItemRepository
+    ) = InsertAttributeDataBaseUseCase(itemRepository)
+
+    @Provides
+    @Reusable
+    fun privideGetItemWithAttributtesFromDataBase(
+        itemRepository: ItemRepository
+    ) = GetItemWithAttibutesDataBaseUseCase(itemRepository)
+
 }

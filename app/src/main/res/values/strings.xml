@@ -1,13 +1,12 @@
 <resources>
     <string name="app_name">SearchEngineMercadoLibre</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="item_search">Item search</string>
-    <string name="envio_gratis">Envio gratis</string>
-    <string name="ultima_busqueda">Última busqueda</string>
-    <string name="buscar_en_mercado_libre">Buscar en mercado libre</string>
+    <string name="free_shipping">Envio gratis</string>
+    <string name="last_search">Última busqueda</string>
+    <string name="search_in_mercado_libre">Buscar en mercado libre</string>
     <string name="search">Search</string>
-    <string name="asd">Buscar en Mercado Libre</string>
-    <string name="no_tiene_favoritos">No tiene favoritos</string>
     <string name="empy_query_search">No ha escrito una busqueda.</string>
+    <string name="favorite">favorito</string>
+    <string name="without_favorites">No tiene favoritos</string>
 </resources>

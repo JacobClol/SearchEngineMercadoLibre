@@ -5,6 +5,6 @@
         android:id="@+id/favoriteAction"
         android:icon="@drawable/ic_baseline_favorite_border_24"
         android:orderInCategory="100"
-        android:title="@string/favorito"
+        android:title="@string/favorite"
         app:showAsAction="always" />
 </menu>

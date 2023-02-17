@@ -1,31 +1,22 @@
 package com.example.searchenginemercadolibre.domain.models
 
-import com.example.searchenginemercadolibre.ui.models.AttributesView
-import com.example.searchenginemercadolibre.ui.models.ItemView
-import com.example.searchenginemercadolibre.ui.models.ResponseView
+import android.os.Parcelable
+import com.example.searchenginemercadolibre.data.database.entities.AttributesEntity
+import com.example.searchenginemercadolibre.data.database.entities.ItemEntity
+import kotlinx.parcelize.Parcelize
 
 data class ItemModel(
     val query: String,
     val siteId: String,
     val totalResults: Int,
     val items: List<Item>
-) {
-    fun toResponseView(): ResponseView {
-        return ResponseView(
-            query = query,
-            siteId = siteId,
-            totalResults = totalResults,
-            itemsList = items.map {
-                it.toItemView()
-            }
-        )
-    }
-}
+)
 
+@Parcelize
 data class Item(
     val itemId: String,
     val title: String,
-    val sellerStaus: String?,
+    val sellerStatus: String?,
     val price: Int,
     val currencyId: String,
     val availableQuantity: Int,
@@ -36,14 +27,15 @@ data class Item(
     val stateName: String,
     val freeShipping: Boolean,
     val countrySellerName: String,
-    val attributes: List<Attributes>,
-    val categoryId: String
-) {
-    fun toItemView(): ItemView {
-        return ItemView(
+    val attributes: List<AttributesModel>?,
+    val categoryId: String,
+    val isSaveDB: Boolean = false
+) : Parcelable {
+    fun toItemEntity(): ItemEntity {
+        return ItemEntity(
             itemId = itemId,
             title = title,
-            sellerStaus = sellerStaus,
+            sellerStatus = sellerStatus,
             price = price,
             currencyId = currencyId,
             availableQuantity = availableQuantity,
@@ -54,24 +46,24 @@ data class Item(
             stateName = stateName,
             freeShipping = freeShipping,
             countrySellerName = countrySellerName,
-            attributes = attributes.map {
-                it.toAttributeView()
-            },
-            categoryId = categoryId
+            categoryId = categoryId,
+            isSaveDB = true
         )
     }
 }
 
-data class Attributes(
+@Parcelize
+data class AttributesModel(
     val id: String,
     val name: String?,
     val valueName: String?,
-) {
-    fun toAttributeView(): AttributesView {
-        return AttributesView(
-            id = id,
-            name = name,
-            valueName = valueName
+) : Parcelable {
+    fun toAttributeEntity(itemId: String): AttributesEntity{
+        return AttributesEntity(
+            id,
+            itemId,
+            name,
+            valueName
         )
     }
 }
