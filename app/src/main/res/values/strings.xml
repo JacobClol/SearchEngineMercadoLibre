@@ -9,4 +9,6 @@
     <string name="empy_query_search">No ha escrito una busqueda.</string>
     <string name="favorite">favorito</string>
     <string name="without_favorites">No tiene favoritos</string>
+    <string name="banner">Banner</string>
+    <string name="label_intro">Bienvenido al buscador para productos de maercado libre.</string>
 </resources>

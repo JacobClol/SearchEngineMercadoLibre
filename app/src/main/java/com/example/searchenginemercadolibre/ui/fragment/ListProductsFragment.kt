@@ -104,9 +104,6 @@ class ListProductsFragment : Fragment(), ItemListAdapter.OnItemClickListener {
     }
 
     private fun setDataInit() {
-
-      //  viewModel.fetchItemList(args.search)
-
         viewModel.itemList.observe(viewLifecycleOwner, Observer {
             listItem.clear()
             listItem.addAll(it)

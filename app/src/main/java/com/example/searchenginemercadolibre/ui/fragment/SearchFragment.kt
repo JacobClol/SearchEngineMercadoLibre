@@ -2,8 +2,11 @@ package com.example.searchenginemercadolibre.ui.fragment
 
 import android.os.Bundle
 import android.view.*
+import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuProvider
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -67,18 +70,12 @@ class SearchFragment : Fragment(), ItemListAdapter.OnItemClickListener {
                 searchView.setOnCloseListener { true }
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        if (!query.isNullOrEmpty()) {
+                        query?.let {
                             val action =
                                 SearchFragmentDirections.actionSearchFragmentToListProductsFragment(
-                                    query
+                                    it
                                 )
                             findNavController().navigate(action)
-                        } else {
-                            Toast.makeText(
-                                requireContext(),
-                                getString(R.string.empy_query_search),
-                                Toast.LENGTH_SHORT
-                            ).show()
                         }
                         return true
                     }
@@ -116,7 +113,7 @@ class SearchFragment : Fragment(), ItemListAdapter.OnItemClickListener {
         })
 
         viewModel.totalItemsResponse.observe(viewLifecycleOwner, Observer {
-            if (it.equals("0")){
+            if (it.equals("0")) {
                 binding.tvSubtitle.text = getString(R.string.without_favorites)
             } else {
                 val totalResultSubtitle = "$it Favoritos"

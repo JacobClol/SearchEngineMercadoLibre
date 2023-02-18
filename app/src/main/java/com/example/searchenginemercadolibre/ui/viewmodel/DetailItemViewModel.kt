@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.searchenginemercadolibre.domain.models.Item
 import com.example.searchenginemercadolibre.domain.usecases.DeleteItemDataBaseUseCase
 import com.example.searchenginemercadolibre.domain.usecases.InsertItemDataBaseUseCase
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -38,6 +40,7 @@ class DetailItemViewModel @Inject constructor(
                 succesDB.postValue("Favorito guardado")
             } catch (e: Exception) {
                 error.postValue("No se puede guardar el favorito")
+                Firebase.crashlytics.recordException(e)
             }
             isLoading.postValue(false)
         }
@@ -51,6 +54,7 @@ class DetailItemViewModel @Inject constructor(
                 succesDB.postValue("Favorito borrado")
             } catch (e: Exception){
                 error.postValue("No se pudo borrar el favorito")
+                Firebase.crashlytics.recordException(e)
             }
             isLoading.postValue(false)
         }

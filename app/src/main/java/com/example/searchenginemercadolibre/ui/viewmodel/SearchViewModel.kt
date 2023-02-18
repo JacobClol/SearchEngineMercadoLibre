@@ -8,6 +8,8 @@ import com.example.searchenginemercadolibre.domain.models.Item
 import com.example.searchenginemercadolibre.domain.models.ItemParams
 import com.example.searchenginemercadolibre.domain.usecases.GetItemBySearchFromApiUseCase
 import com.example.searchenginemercadolibre.domain.usecases.GetItemWithAttibutesDataBaseUseCase
+import com.google.firebase.crashlytics.ktx.crashlytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -44,6 +46,7 @@ class SearchViewModel @Inject constructor(
                 itemList.postValue(response.items)
                 totalItemsResponse.postValue(response.totalResults.toString())
             } else {
+                Firebase.crashlytics.log("No found item by search")
                 error.postValue("No se encontró items para la busqueda")
             }
             isLoading.postValue(false)

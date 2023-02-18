@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1004838908791",
+    "project_id": "searchenginemercadolibre",
+    "storage_bucket": "searchenginemercadolibre.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1004838908791:android:0903135740f0515303a772",
+        "android_client_info": {
+          "package_name": "com.example.searchenginemercadolibre"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1004838908791-8rbfdobjapuiqeh54gfe4soq9e00e8tl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBftHwFgY8xEqqp15gX3N7p5EIYm64j8z8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1004838908791-8rbfdobjapuiqeh54gfe4soq9e00e8tl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

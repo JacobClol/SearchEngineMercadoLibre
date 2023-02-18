@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.searchenginemercadolibre.ui.fragment.SearchFragment"
-        android:label="Searcher"
+        android:label="Mercado Libre"
         tools:layout="@layout/fragment_search" >
         <action
             android:id="@+id/action_searchFragment_to_listProductsFragment"
@@ -28,7 +28,7 @@
     <fragment
         android:id="@+id/listProductsFragment"
         android:name="com.example.searchenginemercadolibre.ui.fragment.ListProductsFragment"
-        android:label="List of products"
+        android:label="Lista de productos"
         tools:layout="@layout/fragment_list_products" >
         <action
             android:id="@+id/action_listProductsFragment_to_detailProductFragment"
@@ -44,7 +44,7 @@
     <fragment
         android:id="@+id/detailProductFragment"
         android:name="com.example.searchenginemercadolibre.ui.fragment.DetailProductFragment"
-        android:label="Detail Product"
+        android:label="Detalle del producto"
         tools:layout="@layout/fragment_detail_product"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
