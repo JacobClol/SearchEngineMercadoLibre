@@ -21,14 +21,16 @@ class SearchViewModel @Inject constructor(
     private val getItemWithAttibutesDataBaseUseCase: GetItemWithAttibutesDataBaseUseCase
 ) : ViewModel() {
 
-    val itemList = MutableLiveData<List<Item>>()
+    val itemListRemote = MutableLiveData<List<Item>>()
+    val itemListLocal =  MutableLiveData<List<Item>>()
     val isLoading = MutableLiveData<Boolean>()
     val totalItemsResponse = MutableLiveData<String>()
     val error = MutableLiveData<String>()
 
     init {
         val query: String? = savedStateHandle["search"]
-        query?.let {
+        if(!query.isNullOrEmpty()){
+            isLoading.postValue(true)
             fetchItemList(query)
         }
         getItemFromDataBase()
@@ -43,7 +45,7 @@ class SearchViewModel @Inject constructor(
                 )
             )
             if (response.items.isNotEmpty()) {
-                itemList.postValue(response.items)
+                itemListRemote.postValue(response.items)
                 totalItemsResponse.postValue(response.totalResults.toString())
             } else {
                 Firebase.crashlytics.log("No found item by search")
@@ -58,10 +60,10 @@ class SearchViewModel @Inject constructor(
             isLoading.postValue(true)
             val items = getItemWithAttibutesDataBaseUseCase()
             if (items.isNotEmpty()) {
-                itemList.postValue(items)
+                itemListLocal.postValue(items)
                 totalItemsResponse.postValue(items.size.toString())
             } else {
-                itemList.postValue(listOf())
+                itemListLocal.postValue(listOf())
                 totalItemsResponse.postValue("0")
             }
             isLoading.postValue(false)

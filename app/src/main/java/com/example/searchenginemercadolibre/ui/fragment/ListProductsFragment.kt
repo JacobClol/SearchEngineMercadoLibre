@@ -31,7 +31,7 @@ class ListProductsFragment : Fragment(), ItemListAdapter.OnItemClickListener {
     private lateinit var adapter: ItemListAdapter
     private val listItem = mutableListOf<Item>()
 
-    private val viewModel:SearchViewModel by viewModels()
+    private val viewModel: SearchViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,8 +50,9 @@ class ListProductsFragment : Fragment(), ItemListAdapter.OnItemClickListener {
     }
 
     override fun onItemClick(item: Item) {
-       val action = ListProductsFragmentDirections.actionListProductsFragmentToDetailProductFragment(item)
-       findNavController().navigate(action)
+        val action =
+            ListProductsFragmentDirections.actionListProductsFragmentToDetailProductFragment(item)
+        findNavController().navigate(action)
     }
 
     private fun initToolbar() {
@@ -70,14 +71,8 @@ class ListProductsFragment : Fragment(), ItemListAdapter.OnItemClickListener {
                 searchView.setOnCloseListener { true }
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        if (!query.isNullOrEmpty()) {
-                            viewModel.fetchItemList(query)
-                        } else {
-                            Toast.makeText(
-                                requireContext(),
-                                getString(R.string.empy_query_search),
-                                Toast.LENGTH_SHORT
-                            ).show()
+                        query?.let {
+                            viewModel.fetchItemList(it)
                         }
                         hideKeyboard()
                         return true
@@ -104,7 +99,7 @@ class ListProductsFragment : Fragment(), ItemListAdapter.OnItemClickListener {
     }
 
     private fun setDataInit() {
-        viewModel.itemList.observe(viewLifecycleOwner, Observer {
+        viewModel.itemListRemote.observe(viewLifecycleOwner, Observer {
             listItem.clear()
             listItem.addAll(it)
             adapter.notifyDataSetChanged()

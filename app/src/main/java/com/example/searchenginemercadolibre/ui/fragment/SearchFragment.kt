@@ -106,7 +106,7 @@ class SearchFragment : Fragment(), ItemListAdapter.OnItemClickListener {
 
         viewModel.getItemFromDataBase()
 
-        viewModel.itemList.observe(viewLifecycleOwner, Observer {
+        viewModel.itemListLocal.observe(viewLifecycleOwner, Observer {
             listItem.clear()
             listItem.addAll(it)
             adapter.notifyDataSetChanged()
