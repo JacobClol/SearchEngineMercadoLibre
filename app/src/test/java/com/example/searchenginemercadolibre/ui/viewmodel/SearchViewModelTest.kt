@@ -1,22 +1,18 @@
 package com.example.searchenginemercadolibre.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.SavedStateHandle
 import com.example.searchenginemercadolibre.domain.models.AttributesModel
 import com.example.searchenginemercadolibre.domain.models.Item
 import com.example.searchenginemercadolibre.domain.models.ItemModel
 import com.example.searchenginemercadolibre.domain.models.ItemParams
 import com.example.searchenginemercadolibre.domain.usecases.GetItemBySearchFromApiUseCase
 import com.example.searchenginemercadolibre.domain.usecases.GetItemWithAttibutesDataBaseUseCase
-import io.mockk.MockKAnnotations
-import io.mockk.coEvery
-import io.mockk.coVerify
+import com.example.searchenginemercadolibre.utils.MainDispatcherRule
+import io.mockk.*
 import io.mockk.impl.annotations.RelaxedMockK
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -34,11 +30,16 @@ class SearchViewModelTest {
     @get:Rule
     var rul: InstantTaskExecutorRule = InstantTaskExecutorRule()
 
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
     @Before
     fun onBefore() {
         MockKAnnotations.init(this)
-        searchViewModel = SearchViewModel(getItemBySearch, getItemWithAttibutesDataBaseUseCase)
-        Dispatchers.setMain(Dispatchers.Unconfined)
+        val savedStateHandle = SavedStateHandle().apply {
+            set("search", null)
+        }
+        searchViewModel = SearchViewModel(savedStateHandle, getItemBySearch, getItemWithAttibutesDataBaseUseCase)
     }
 
     private var itemMock = ItemModel(
@@ -76,6 +77,17 @@ class SearchViewModelTest {
         query = "Motorola"
     )
 
+    @Test
+    fun `when SearchViewModel is init then call savedStateHandle and return string with search value`() = runTest {
+       //Given
+        val savedStateHandle = SavedStateHandle().apply {
+            set("search", "Motorola")
+        }
+        //When
+        searchViewModel = SearchViewModel(savedStateHandle, getItemBySearch, getItemWithAttibutesDataBaseUseCase)
+        //Then
+        assert(savedStateHandle.get<String>("search") == "Motorola")
+    }
 
 
     @Test
@@ -88,13 +100,15 @@ class SearchViewModelTest {
             searchViewModel.fetchItemList("Motorola")
 
             //Then
-            coVerify(exactly = 1) {
+            coVerify {
                 getItemBySearch(itemParamsMock)
             }
+
             coVerify(exactly = 0) {
                 getItemWithAttibutesDataBaseUseCase()
             }
-            assert(searchViewModel.itemList.value == itemMock.items)
+
+            assert(searchViewModel.itemListRemote.value == itemMock.items)
             assert(searchViewModel.totalItemsResponse.value == itemMock.totalResults.toString())
             assert(searchViewModel.error.value == null)
             assert(searchViewModel.isLoading.value == false)
@@ -119,7 +133,7 @@ class SearchViewModelTest {
                 getItemWithAttibutesDataBaseUseCase()
             }
             assert(searchViewModel.error.value == "No se encontró items para la busqueda")
-            assert(searchViewModel.itemList.value == null)
+            assert(searchViewModel.itemListRemote.value == null)
             assert(searchViewModel.totalItemsResponse.value == null)
             assert(searchViewModel.isLoading.value == false)
         }
@@ -140,7 +154,7 @@ class SearchViewModelTest {
             coVerify(exactly = 0) {
                 getItemBySearch(itemParamsMock)
             }
-            assert(searchViewModel.itemList.value == itemMock.items)
+            assert(searchViewModel.itemListLocal.value == itemMock.items)
             assert(searchViewModel.totalItemsResponse.value == itemMock.items.size.toString())
             assert(searchViewModel.error.value == null)
             assert(searchViewModel.isLoading.value == false)
@@ -163,14 +177,10 @@ class SearchViewModelTest {
             coVerify(exactly = 0) {
                 getItemBySearch(itemParamsMock)
             }
-            assert(searchViewModel.itemList.value == itemMock.items)
+            assert(searchViewModel.itemListLocal.value == itemMock.items)
             assert(searchViewModel.totalItemsResponse.value == "0")
             assert(searchViewModel.error.value == null)
             assert(searchViewModel.isLoading.value == false)
         }
 
-    @After
-    fun onAfter() {
-        Dispatchers.resetMain()
-    }
 }

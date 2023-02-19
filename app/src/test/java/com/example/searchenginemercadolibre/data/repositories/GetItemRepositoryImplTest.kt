@@ -5,7 +5,7 @@ import com.example.searchenginemercadolibre.data.database.entities.ItemEntity
 import com.example.searchenginemercadolibre.data.database.entities.ItemWithAttribute
 import com.example.searchenginemercadolibre.data.datasources.ItemDataBaseDataSource
 import com.example.searchenginemercadolibre.data.datasources.ItemRemoteDataSource
-import com.example.searchenginemercadolibre.data.models.*
+import com.example.searchenginemercadolibre.data.datasources.models.*
 import com.example.searchenginemercadolibre.domain.models.AttributesModel
 import com.example.searchenginemercadolibre.domain.models.Item
 import com.example.searchenginemercadolibre.domain.models.ItemModel
