@@ -1,4 +1,4 @@
-package com.example.searchenginemercadolibre.data.models
+package com.example.searchenginemercadolibre.data.datasources.models
 
 import com.example.searchenginemercadolibre.domain.models.AttributesModel
 import com.example.searchenginemercadolibre.domain.models.Item

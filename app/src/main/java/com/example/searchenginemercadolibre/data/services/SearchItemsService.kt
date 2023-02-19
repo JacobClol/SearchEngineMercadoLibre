@@ -1,6 +1,6 @@
 package com.example.searchenginemercadolibre.data.services
 
-import com.example.searchenginemercadolibre.data.models.APIItemResponse
+import com.example.searchenginemercadolibre.data.datasources.models.APIItemResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

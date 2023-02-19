@@ -30,10 +30,8 @@ class SearchViewModel @Inject constructor(
     init {
         val query: String? = savedStateHandle["search"]
         if(!query.isNullOrEmpty()){
-            isLoading.postValue(true)
             fetchItemList(query)
         }
-        getItemFromDataBase()
     }
 
     fun fetchItemList(query: String) {
@@ -48,7 +46,7 @@ class SearchViewModel @Inject constructor(
                 itemListRemote.postValue(response.items)
                 totalItemsResponse.postValue(response.totalResults.toString())
             } else {
-                Firebase.crashlytics.log("No found item by search")
+               // Firebase.crashlytics.log("No found item by search")
                 error.postValue("No se encontró items para la busqueda")
             }
             isLoading.postValue(false)

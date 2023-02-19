@@ -1,10 +1,12 @@
 package com.example.searchenginemercadolibre.ui.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.SavedStateHandle
 import com.example.searchenginemercadolibre.domain.models.AttributesModel
 import com.example.searchenginemercadolibre.domain.models.Item
 import com.example.searchenginemercadolibre.domain.usecases.DeleteItemDataBaseUseCase
 import com.example.searchenginemercadolibre.domain.usecases.InsertItemDataBaseUseCase
+import com.example.searchenginemercadolibre.utils.MainDispatcherRule
 import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
@@ -31,12 +33,17 @@ class DetailItemViewModelTest {
     @get:Rule
     var rul: InstantTaskExecutorRule = InstantTaskExecutorRule()
 
+    @get:Rule
+    val mainDispatcherRule = MainDispatcherRule()
+
     @Before
     fun onBefore() {
         MockKAnnotations.init(this)
+        val savedStateHandle = SavedStateHandle().apply {
+            set("search", null)
+        }
         detailItemViewModel =
-            DetailItemViewModel(insertItemDataBaseUseCase, deleteItemDataBaseUseCase)
-        Dispatchers.setMain(Dispatchers.Unconfined)
+            DetailItemViewModel(savedStateHandle, insertItemDataBaseUseCase, deleteItemDataBaseUseCase)
     }
 
     private val itemMock = Item(
@@ -62,6 +69,18 @@ class DetailItemViewModelTest {
         ),
         categoryId = "MCO12345"
     )
+
+    @Test
+    fun `when DetailItemViewModel is init then call savedStateHandle and return the Item with search value`() = runTest {
+        //Given
+        val savedStateHandle = SavedStateHandle().apply {
+            set("search", itemMock)
+        }
+        //When
+        detailItemViewModel = DetailItemViewModel(savedStateHandle, insertItemDataBaseUseCase, deleteItemDataBaseUseCase)
+        //Then
+        assert(savedStateHandle.get<Item>("search") == itemMock)
+    }
 
     @Test
     fun `Given a Item for save in data base when insertItemDataBaseUseCase is called then post success message`() =
@@ -117,10 +136,5 @@ class DetailItemViewModelTest {
             assert(detailItemViewModel.error.value == null)
             assert(detailItemViewModel.isLoading.value == false)
         }
-
-    @After
-    fun onAfter() {
-        Dispatchers.resetMain()
-    }
 
 }
