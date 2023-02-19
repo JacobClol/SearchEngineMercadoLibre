@@ -19,7 +19,7 @@ Lo primero que considero que se debe hacer siguiendo consejos de otros desarroll
 
 ![miroDesign](https://user-images.githubusercontent.com/32649079/219828184-5d3b4f98-7376-43cd-89df-3b7c317b1b86.png)
 
-Para la parte de UI se utiliza una única ACTIVITY y FRAGMENTS con la finalidad de utilizar el NAVIGATION VIEW, esto mejora la navegabilidad, el envío de parámetros con SAVE ARGS que unión con DAGGER HILT y el VIEW MODEL ayuda a controlar el estado de la vista y mantener su configuración, por ejemplo, mantener los datos al momento de rotar la pantalla y evitar llamados innecesarios a los casos de uso.
+Para la parte de UI se utiliza una única ACTIVITY y FRAGMENTS con la finalidad de utilizar el NAVIGATION VIEW, esto mejora la navegabilidad, el envío de parámetros con SAFE ARGS que unión con DAGGER HILT y el VIEW MODEL ayuda a controlar el estado de la vista y mantener su configuración, por ejemplo, mantener los datos al momento de rotar la pantalla y evitar llamados innecesarios a los casos de uso.
 
 Para mostrar las imágenes se utiliza la librería de GLIDE. 
 
