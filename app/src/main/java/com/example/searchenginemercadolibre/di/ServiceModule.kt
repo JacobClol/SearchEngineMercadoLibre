@@ -1,9 +1,7 @@
 package com.example.searchenginemercadolibre.di
 
-import com.example.searchenginemercadolibre.data.services.SearchItemsService
 import dagger.Module
 import dagger.Provides
-import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
@@ -14,7 +12,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class ServiceModule {
+object ServiceModule {
 
     @Provides
     @Singleton
@@ -41,12 +39,6 @@ class ServiceModule {
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-    }
-
-    @Provides
-    @Singleton
-    fun provideMovieService(retrofit: Retrofit): SearchItemsService{
-        return retrofit.create(SearchItemsService::class.java)
     }
 }
 

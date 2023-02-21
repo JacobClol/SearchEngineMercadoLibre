@@ -14,9 +14,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.searchenginemercadolibre.R
 import com.example.searchenginemercadolibre.databinding.FragmentDetailProductBinding
+import com.example.searchenginemercadolibre.domain.models.AttributesModel
+import com.example.searchenginemercadolibre.ui.adapter.AttributeAdapter
+import com.example.searchenginemercadolibre.ui.adapter.ItemListAdapter
+import com.example.searchenginemercadolibre.ui.adapter.ViewPagerAdapter
 import com.example.searchenginemercadolibre.ui.viewmodel.DetailItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.text.DecimalFormat
@@ -29,6 +34,12 @@ class DetailProductFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel by viewModels<DetailItemViewModel>()
 
+    private lateinit var adapter: AttributeAdapter
+    private val listAttribute = mutableListOf<AttributesModel>()
+
+    private lateinit var viewPagerAdapter: ViewPagerAdapter
+    private val listPhotos = mutableListOf<String>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -40,6 +51,8 @@ class DetailProductFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initToolbar()
+        setUpRecyclerView()
+        setUpViewPager()
         setDataInit()
     }
 
@@ -69,19 +82,43 @@ class DetailProductFragment : Fragment() {
         }
     }
 
+    private fun setUpRecyclerView() {
+        adapter = AttributeAdapter(requireContext(), listAttribute)
+        binding.rvAttribute.layoutManager = LinearLayoutManager(requireContext())
+        binding.rvAttribute.adapter = adapter
+    }
+
+    private fun setUpViewPager(){
+        viewPagerAdapter = ViewPagerAdapter(requireContext(), listPhotos)
+        binding.vpPhotos.adapter = viewPagerAdapter
+    }
+
     private fun setDataInit() {
         viewModel.itemDetail.observe(viewLifecycleOwner, Observer {
             with(binding) {
                 try {
-                    Glide.with(requireContext()).load(it.thumbnail).placeholder(R.drawable.load)
-                        .into(ivPhotos)
                     tvTitleItem.text = it.title
                     val doublePrice = it.price.toDouble()
                     val formatter = DecimalFormat("#,###.00")
                     val price = "$ ${formatter.format(doublePrice)}"
                     tvPrice.text = price
-                    tvDescription.text = it.condition
-                    tvAttributes.text = it.attributes?.get(0)?.name ?: ""
+                    val sellerStatus = "Estatus Vendedor: ${it.sellerStatus}"
+                    tvSelletSatus.text = sellerStatus
+                    val availableQuantity = "Disponibles: ${it.availableQuantity}"
+                    tvAvailableQuantity.text = availableQuantity
+                    val soldQuantity = "Venditos: ${it.soldQuantity}"
+                    tvSoldQuantity.text = soldQuantity
+                    tvCondition.text = it.condition
+                    if (it.freeShipping){
+                        val freeShipping = "FreeShipping"
+                        tvFreeShiping.text = freeShipping
+                    }
+                    val stateName = "Estado producto: ${it.stateName}"
+                    tvStateName.text = stateName
+                    val cityName = "Ciudad producto: ${it.cityName}"
+                    tvCityName.text = cityName
+                    it.attributes?.let { attributes -> listAttribute.addAll(attributes) }
+                    adapter.notifyDataSetChanged()
                 } catch (e: Exception) {
                     Toast.makeText(requireContext(), "Falla en la carga de datos", Toast.LENGTH_SHORT)
                         .show()

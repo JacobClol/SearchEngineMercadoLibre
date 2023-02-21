@@ -1,4 +1,4 @@
-package com.example.searchenginemercadolibre.data.datasources.models
+package com.example.searchenginemercadolibre.data.models
 
 import com.example.searchenginemercadolibre.domain.models.AttributesModel
 import com.example.searchenginemercadolibre.domain.models.Item
@@ -129,14 +129,6 @@ data class Attribute(
     }
 }
 
-data class Installments(
-    val amount: Double,
-    @SerializedName("currency_id")
-    val currencyId: String,
-    val quantity: Int,
-    val rate: Int
-)
-
 data class Seller(
     @SerializedName("car_dealer")
     val carDealer: Boolean,
@@ -177,13 +169,6 @@ data class Shipping(
     val tags: List<String>
 )
 
-data class Value(
-    val id: String,
-    val name: String?,
-    val source: String,
-    val struct: Any?
-)
-
 data class SellerReputation(
     @SerializedName("level_id")
     val levelId: String,
@@ -191,62 +176,7 @@ data class SellerReputation(
     val sellerStatus: String?
 )
 
-data class Metrics(
-    val cancellations: Cancellations,
-    val claims: Claims,
-    @SerializedName("delayed_handling_time")
-    val delayedHandlingTime: DelayedHandlingTime,
-    val sales: Sales
-)
-
-data class Transactions(
-    val canceled: Int,
-    val completed: Int,
-    val period: String,
-    val ratings: Ratings,
-    val total: Int
-)
-
-data class Cancellations(
-    val period: String,
-    val rate: Double,
-    val value: Int
-)
-
-data class Claims(
-    val period: String,
-    val rate: Double,
-    val value: Int
-)
-
-data class DelayedHandlingTime(
-    val period: String,
-    val rate: Double,
-    val value: Int
-)
-
-data class Sales(
-    val completed: Int,
-    val period: String
-)
-
-data class Ratings(
-    val negative: Double,
-    val neutral: Double,
-    val positive: Double
-)
-
-data class City(
-    val id: String,
-    val name: String
-)
-
 data class Country(
-    val id: String,
-    val name: String
-)
-
-data class State(
     val id: String,
     val name: String
 )
