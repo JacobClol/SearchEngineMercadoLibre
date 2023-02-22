@@ -1,12 +1,19 @@
 package com.example.searchenginemercadolibre.ui
 
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.example.searchenginemercadolibre.R
 import com.example.searchenginemercadolibre.ui.fragment.SearchFragment
+import com.example.searchenginemercadolibre.ui.viewmodel.SearchViewModel
 import com.example.searchenginemercadolibre.utils.launchFragmentInHiltContainer
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.components.FragmentComponent
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import io.mockk.mockk
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -38,9 +45,10 @@ class RoboMainActivityTest {
 
     @Test
     fun fragmentSearch() {
+        val navController = mockk<NavController>()
        launchFragmentInHiltContainer<SearchFragment>(){
             assert(
-                this.view?.findViewById<TextView>(R.id.tvLabelIntro)?.text.toString() == "Bienvenido al buscador de productos de Mercado Libre en Colombia"
+                this.view?.findViewById<TextView>(com.example.searchenginemercadolibre.R.id.tvLabelIntro)?.text.toString() == "Bienvenido al buscador de productos de Mercado Libre en Colombia"
             )
         }
     }

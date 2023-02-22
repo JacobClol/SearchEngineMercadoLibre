@@ -1,11 +1,13 @@
 package com.example.searchenginemercadolibre.ui.pages
 
+import androidx.navigation.NavController
 import androidx.test.core.app.launchActivity
 import com.example.searchenginemercadolibre.ui.MainActivity
 import com.example.searchenginemercadolibre.ui.fragment.SearchFragment
 import com.example.searchenginemercadolibre.utils.Page
 import com.example.searchenginemercadolibre.utils.isTextDisplayed
 import com.example.searchenginemercadolibre.utils.launchFragmentInHiltContainer
+import io.mockk.mockk
 
 class SearchFragmentPage : Page() {
 
@@ -15,7 +17,8 @@ class SearchFragmentPage : Page() {
     }
 
     fun launchFragmentView(): SearchFragmentPage {
-        launchFragmentInHiltContainer<SearchFragment>()
+        val navController = mockk<NavController>()
+        launchFragmentInHiltContainer<SearchFragment>(null, com.example.searchenginemercadolibre.R.style.Theme_SearchEngineMercadoLibre, navController)
         return this
     }
 

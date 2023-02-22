@@ -15,12 +15,10 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.example.searchenginemercadolibre.R
 import com.example.searchenginemercadolibre.databinding.FragmentDetailProductBinding
 import com.example.searchenginemercadolibre.domain.models.AttributesModel
 import com.example.searchenginemercadolibre.ui.adapter.AttributeAdapter
-import com.example.searchenginemercadolibre.ui.adapter.ItemListAdapter
 import com.example.searchenginemercadolibre.ui.adapter.ViewPagerAdapter
 import com.example.searchenginemercadolibre.ui.viewmodel.DetailItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,20 +63,27 @@ class DetailProductFragment : Fragment() {
             when (it.itemId) {
                 R.id.favoriteAction -> {
                     if (args.item.isSaveDB) {
-                        it.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_border_24)
+                        it.icon = ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_baseline_favorite_border_24
+                        )
                         viewModel.deleteItemDB(args.item)
                     } else {
-                        it.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
-                        viewModel.inserItemDB(args.item)
+                        it.icon = ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_baseline_favorite_24
+                        )
+                        viewModel.insertItemDB(args.item)
                     }
                     true
                 }
                 else -> false
             }
         }
-        if(args.item.isSaveDB){
-           val item = binding.toolbar.menu.findItem(R.id.favoriteAction)
-            item.icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
+        if (args.item.isSaveDB) {
+            val item = binding.toolbar.menu.findItem(R.id.favoriteAction)
+            item.icon =
+                ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_favorite_24)
         }
     }
 
@@ -88,7 +93,7 @@ class DetailProductFragment : Fragment() {
         binding.rvAttribute.adapter = adapter
     }
 
-    private fun setUpViewPager(){
+    private fun setUpViewPager() {
         viewPagerAdapter = ViewPagerAdapter(requireContext(), listPhotos)
         binding.vpPhotos.adapter = viewPagerAdapter
     }
@@ -109,7 +114,7 @@ class DetailProductFragment : Fragment() {
                     val soldQuantity = "Venditos: ${it.soldQuantity}"
                     tvSoldQuantity.text = soldQuantity
                     tvCondition.text = it.condition
-                    if (it.freeShipping){
+                    if (it.freeShipping) {
                         val freeShipping = "FreeShipping"
                         tvFreeShiping.text = freeShipping
                     }
@@ -120,20 +125,35 @@ class DetailProductFragment : Fragment() {
                     it.attributes?.let { attributes -> listAttribute.addAll(attributes) }
                     adapter.notifyDataSetChanged()
                 } catch (e: Exception) {
-                    Toast.makeText(requireContext(), "Falla en la carga de datos", Toast.LENGTH_SHORT)
+                    Toast.makeText(
+                        requireContext(),
+                        "Falla en la carga de datos",
+                        Toast.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
         })
 
-        viewModel.succesDB.observe(viewLifecycleOwner, Observer {
+        viewModel.succesDB.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
-        })
+        }
         viewModel.error.observe(viewLifecycleOwner, Observer {
             Toast.makeText(requireContext(), it, Toast.LENGTH_SHORT).show()
         })
         viewModel.isLoading.observe(viewLifecycleOwner, Observer {
             binding.progressBar.isVisible = it
         })
+
+        viewModel.pictures.observe(viewLifecycleOwner) {
+            listPhotos.addAll(it)
+            viewPagerAdapter.notifyDataSetChanged()
+        }
+
+        viewModel.attributeDetail.observe(viewLifecycleOwner) {
+            val sizePreviesList = listAttribute.size
+            listAttribute.addAll(it)
+            adapter.notifyItemRangeInserted(sizePreviesList -1, it.size)
+        }
     }
 }

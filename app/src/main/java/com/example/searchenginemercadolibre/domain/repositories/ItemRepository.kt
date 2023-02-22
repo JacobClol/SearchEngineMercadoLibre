@@ -1,12 +1,11 @@
 package com.example.searchenginemercadolibre.domain.repositories
 
-import com.example.searchenginemercadolibre.domain.models.AttributesModel
-import com.example.searchenginemercadolibre.domain.models.Item
-import com.example.searchenginemercadolibre.domain.models.ItemModel
-import com.example.searchenginemercadolibre.domain.models.ItemParams
+import com.example.searchenginemercadolibre.domain.models.*
 
 interface ItemRepository {
     suspend fun getListItemsFromAPI(params: ItemParams): ItemModel
+
+    suspend fun getDetailItemFromAPI(itemId: String): DetailItemModel
 
     suspend fun insertItemsToDataBase(item: Item)
 

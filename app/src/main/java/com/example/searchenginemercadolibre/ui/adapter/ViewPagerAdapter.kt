@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.example.searchenginemercadolibre.R
@@ -21,7 +22,7 @@ class ViewPagerAdapter(
     }
 
     override fun isViewFromObject(view: View, `object`: Any): Boolean {
-        return view === `object` as RelativeLayout
+        return view === `object`
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
@@ -34,5 +35,9 @@ class ViewPagerAdapter(
 
         Objects.requireNonNull(container).addView(itemView)
         return itemView
+    }
+
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        container.removeView(`object` as View)
     }
 }

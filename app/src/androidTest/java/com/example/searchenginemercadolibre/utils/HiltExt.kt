@@ -6,13 +6,16 @@ import android.os.Bundle
 import androidx.annotation.StyleRes
 import androidx.core.util.Preconditions
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import com.example.searchenginemercadolibre.HiltTestActivity
 
 inline fun <reified T : Fragment> launchFragmentInHiltContainer(
     fragmentArgs: Bundle? = null,
-    @StyleRes themeResId: Int = R.style.FragmentScenarioEmptyFragmentActivityTheme,
+    @StyleRes themeResId: Int = androidx.fragment.testing.R.style.FragmentScenarioEmptyFragmentActivityTheme,
+    navController: NavController? = null,
     crossinline action: Fragment.() -> Unit = {}
 ) {
     val startActivityIntent = Intent.makeMainActivity(
@@ -31,6 +34,13 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
             T::class.java.name
         )
         fragment.arguments = fragmentArgs
+        navController?.let {
+            fragment.viewLifecycleOwnerLiveData.observeForever { lifeCycleOwner ->
+                if (lifeCycleOwner != null) {
+                    Navigation.setViewNavController(fragment.requireView(), it)
+                }
+            }
+        }
         activity.supportFragmentManager
             .beginTransaction()
             .add(android.R.id.content, fragment, "")
