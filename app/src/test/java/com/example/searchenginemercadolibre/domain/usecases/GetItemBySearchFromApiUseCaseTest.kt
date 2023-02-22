@@ -18,7 +18,7 @@ class GetItemBySearchFromApiUseCaseTest {
     @RelaxedMockK
     private lateinit var itemRepository: ItemRepository
 
-    private lateinit var getItemBySearchFromApiUseCase : GetItemBySearchFromApiUseCase
+    private lateinit var getItemBySearchFromApiUseCase: GetItemBySearchFromApiUseCase
 
     @Before
     fun onBefore(){
@@ -67,10 +67,10 @@ class GetItemBySearchFromApiUseCaseTest {
         coEvery { itemRepository.getListItemsFromAPI(paramsMock) } returns itemMock
 
         //When
-        val respose = getItemBySearchFromApiUseCase(paramsMock)
+        val response = getItemBySearchFromApiUseCase(paramsMock)
 
         //Then
         coVerify(exactly = 1) { itemRepository.getListItemsFromAPI(paramsMock) }
-        assert(respose == itemMock)
+        assert(response == itemMock)
     }
 }

@@ -8,15 +8,13 @@ import com.example.searchenginemercadolibre.domain.models.Item
 import com.example.searchenginemercadolibre.domain.models.ItemParams
 import com.example.searchenginemercadolibre.domain.usecases.GetItemBySearchFromApiUseCase
 import com.example.searchenginemercadolibre.domain.usecases.GetItemWithAttibutesDataBaseUseCase
-import com.google.firebase.crashlytics.ktx.crashlytics
-import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val savedStateHandle: SavedStateHandle,
+    savedStateHandle: SavedStateHandle,
     private val getItemBySearch: GetItemBySearchFromApiUseCase,
     private val getItemWithAttibutesDataBaseUseCase: GetItemWithAttibutesDataBaseUseCase
 ) : ViewModel() {

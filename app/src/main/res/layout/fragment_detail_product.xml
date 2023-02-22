@@ -55,18 +55,24 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="# Resultados" />
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ivPhotos"
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/vpPhotos"
                 android:layout_width="0dp"
-                android:layout_height="200dp"
+                android:layout_height="0dp"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="10dp"
-                android:scaleType="fitCenter"
+                app:layout_constraintBottom_toTopOf="@id/guide"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvTitleItem"
-                tools:src="@drawable/load" />
+                app:layout_constraintTop_toBottomOf="@id/tvTitleItem" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.4" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvPrice"
@@ -77,13 +83,40 @@
                 android:layout_marginEnd="10dp"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvSelletSatus"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ivPhotos"
+                app:layout_constraintTop_toBottomOf="@id/guide"
                 tools:text="# Resultados" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvDescription"
+                android:id="@+id/tvSelletSatus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvPrice"
+                app:layout_constraintTop_toBottomOf="@id/guide"
+                tools:text="# Resultados" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAvailableQuantity"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@id/tvSoldQuantity"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvSelletSatus"
+                tools:text="# Resultados" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSoldQuantity"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -91,22 +124,91 @@
                 android:layout_marginEnd="10dp"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvPrice"
+                app:layout_constraintStart_toEndOf="@id/tvAvailableQuantity"
+                app:layout_constraintTop_toBottomOf="@id/tvSelletSatus"
                 tools:text="# Resultados" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvAttributes"
+                android:id="@+id/tvCondition"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="18sp"
+                android:textColor="@color/teal_700"
+                app:layout_constraintEnd_toStartOf="@id/tvFreeShiping"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvSoldQuantity"
+                tools:text="# Resultados" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvFreeShiping"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="18sp"
+                android:textColor="@color/teal_700"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvCondition"
+                app:layout_constraintTop_toBottomOf="@id/tvSoldQuantity"
+                tools:text="# Resultados" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvStateName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@id/tvCityName"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCondition"
+                tools:text="# Resultados" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCityName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="10dp"
                 android:textSize="18sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvDescription"
+                app:layout_constraintStart_toEndOf="@id/tvStateName"
+                app:layout_constraintTop_toBottomOf="@id/tvCondition"
                 tools:text="# Resultados" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvLabelAttribute"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="10dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:text="@string/attributes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/tvStateName"
+                app:layout_constraintTop_toBottomOf="@id/tvCondition" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvAttribute"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvStateName"
+                app:layout_constraintVertical_bias="0.0" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

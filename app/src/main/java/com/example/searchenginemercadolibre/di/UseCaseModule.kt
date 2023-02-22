@@ -10,7 +10,7 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class UseCaseModule {
+object UseCaseModule {
 
     @Provides
     @Reusable

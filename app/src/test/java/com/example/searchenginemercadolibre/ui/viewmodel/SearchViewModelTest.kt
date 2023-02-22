@@ -23,14 +23,14 @@ class SearchViewModelTest {
     private lateinit var getItemBySearch: GetItemBySearchFromApiUseCase
 
     @RelaxedMockK
-    private lateinit var getItemWithAttibutesDataBaseUseCase: GetItemWithAttibutesDataBaseUseCase
+    private lateinit var getItemWithAttributesDataBaseUseCase: GetItemWithAttibutesDataBaseUseCase
 
     private lateinit var searchViewModel: SearchViewModel
 
-    @get:Rule
+    @get:Rule(order = 0)
     var rul: InstantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @get:Rule
+    @get:Rule(order = 1)
     val mainDispatcherRule = MainDispatcherRule()
 
     @Before
@@ -39,7 +39,7 @@ class SearchViewModelTest {
         val savedStateHandle = SavedStateHandle().apply {
             set("search", null)
         }
-        searchViewModel = SearchViewModel(savedStateHandle, getItemBySearch, getItemWithAttibutesDataBaseUseCase)
+        searchViewModel = SearchViewModel(savedStateHandle, getItemBySearch, getItemWithAttributesDataBaseUseCase)
     }
 
     private var itemMock = ItemModel(
@@ -84,7 +84,7 @@ class SearchViewModelTest {
             set("search", "Motorola")
         }
         //When
-        searchViewModel = SearchViewModel(savedStateHandle, getItemBySearch, getItemWithAttibutesDataBaseUseCase)
+        searchViewModel = SearchViewModel(savedStateHandle, getItemBySearch, getItemWithAttributesDataBaseUseCase)
         //Then
         assert(savedStateHandle.get<String>("search") == "Motorola")
     }
@@ -105,7 +105,7 @@ class SearchViewModelTest {
             }
 
             coVerify(exactly = 0) {
-                getItemWithAttibutesDataBaseUseCase()
+                getItemWithAttributesDataBaseUseCase()
             }
 
             assert(searchViewModel.itemListRemote.value == itemMock.items)
@@ -130,7 +130,7 @@ class SearchViewModelTest {
                 getItemBySearch(itemParamsMock)
             }
             coVerify(exactly = 0) {
-                getItemWithAttibutesDataBaseUseCase()
+                getItemWithAttributesDataBaseUseCase()
             }
             assert(searchViewModel.error.value == "No se encontró items para la busqueda")
             assert(searchViewModel.itemListRemote.value == null)
@@ -142,14 +142,14 @@ class SearchViewModelTest {
     fun `when SearchViewModel is created and call getItemFromDataBase then should get list item and set the values`() =
         runTest {
             //Given
-            coEvery { getItemWithAttibutesDataBaseUseCase() } returns itemMock.items
+            coEvery { getItemWithAttributesDataBaseUseCase() } returns itemMock.items
 
             //When
             searchViewModel.getItemFromDataBase()
 
             //Then
             coVerify(exactly = 1) {
-                getItemWithAttibutesDataBaseUseCase()
+                getItemWithAttributesDataBaseUseCase()
             }
             coVerify(exactly = 0) {
                 getItemBySearch(itemParamsMock)
@@ -164,7 +164,7 @@ class SearchViewModelTest {
     fun `when SearchViewModel is created, call getItemFromDataBase and return list empty then should post empty list and total item equal 0`() =
         runTest {
             //Given
-            coEvery { getItemWithAttibutesDataBaseUseCase() } returns listOf()
+            coEvery { getItemWithAttributesDataBaseUseCase() } returns listOf()
             itemMock = itemMock.copy(items = listOf())
 
             //When
@@ -172,7 +172,7 @@ class SearchViewModelTest {
 
             //Then
             coVerify(exactly = 1) {
-                getItemWithAttibutesDataBaseUseCase()
+                getItemWithAttributesDataBaseUseCase()
             }
             coVerify(exactly = 0) {
                 getItemBySearch(itemParamsMock)

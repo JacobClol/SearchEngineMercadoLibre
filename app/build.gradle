@@ -20,7 +20,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.example.searchenginemercadolibre.utils.CustomTestRunner"
     }
 
     buildTypes {
@@ -39,6 +39,11 @@ android {
     buildFeatures {
         viewBinding true
     }
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -51,8 +56,8 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
     implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
     //Dagger hilt
-    implementation 'com.google.dagger:hilt-android:2.44.2'
-    kapt 'com.google.dagger:hilt-compiler:2.44.2'
+    implementation 'com.google.dagger:hilt-android:2.45'
+    kapt 'com.google.dagger:hilt-compiler:2.45'
     //firebase crashlytichs & analytics
     implementation 'com.google.firebase:firebase-crashlytics-ktx:18.3.5'
     implementation 'com.google.firebase:firebase-analytics-ktx:21.2.0'
@@ -80,6 +85,11 @@ dependencies {
     testImplementation 'io.mockk:mockk:1.13.2'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4'
     testImplementation 'androidx.arch.core:core-testing:2.1.0'
+    testImplementation 'org.robolectric:robolectric:4.9'
+    testImplementation 'com.google.dagger:hilt-android-testing:2.45'
+    testImplementation 'androidx.test.ext:junit-ktx:1.1.5'
+    kaptTest 'com.google.dagger:hilt-android-compiler:2.45'
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     androidTestImplementation 'androidx.test:core:1.5.0'
@@ -87,5 +97,13 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.5.2'
     androidTestImplementation 'androidx.test:rules:1.5.0'
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.1'
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.45'
+    androidTestImplementation 'io.mockk:mockk-android:1.13.2'
+    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.45'
+
     debugImplementation 'androidx.fragment:fragment-testing:1.5.5'
+}
+
+kapt {
+    correctErrorTypes true
 }

@@ -11,4 +11,5 @@
     <string name="without_favorites">No tiene favoritos</string>
     <string name="banner">Banner</string>
     <string name="label_intro">Bienvenido al buscador de productos de Mercado Libre en Colombia</string>
+    <string name="attributes">Atributos</string>
 </resources>
