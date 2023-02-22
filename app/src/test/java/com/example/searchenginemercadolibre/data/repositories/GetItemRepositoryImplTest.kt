@@ -141,9 +141,9 @@ class GetItemRepositoryImplTest {
         isSaveDB = true
     )
 
-    private val aPIDetailItemResponseMock = APIDetailItemResponse(
-        listOf(
-            APIDetailItemResponseItem(
+    private val aPIDetailItemResponse = APIDetailItemResponse
+
+    private val aPIDetailItemResponseMock = APIDetailItemResponseItem(
                 body = Body(
                     attributes = listOf(
                         APIAttribute(
@@ -175,8 +175,6 @@ class GetItemRepositoryImplTest {
                 ),
                 code = 1
             )
-        )
-    )
 
     @Before
     fun onBefore() {
@@ -213,9 +211,11 @@ class GetItemRepositoryImplTest {
             //Given
             val itemIdMock = "MCO811601010"
 
+            aPIDetailItemResponse.add(aPIDetailItemResponseMock)
+
             coEvery {
                 itemRemoteDataSource.getDetailItemsById(itemIdMock)
-            } returns aPIDetailItemResponseMock
+            } returns aPIDetailItemResponse
 
             //When
             val response = getItemRepositoryImpl.getDetailItemFromAPI(itemIdMock)
@@ -224,7 +224,7 @@ class GetItemRepositoryImplTest {
             coVerify(exactly = 1) {
                 itemRemoteDataSource.getDetailItemsById(itemIdMock)
             }
-            assert(response == aPIDetailItemResponseMock.listDetailItem.first().toDetailItemModel())
+            assert(response == aPIDetailItemResponse.first().toDetailItemModel())
         }
 
     @Test

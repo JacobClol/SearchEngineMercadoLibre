@@ -113,12 +113,18 @@ class DetailProductFragment : Fragment() {
                     tvAvailableQuantity.text = availableQuantity
                     val soldQuantity = "Venditos: ${it.soldQuantity}"
                     tvSoldQuantity.text = soldQuantity
-                    tvCondition.text = it.condition
+
+                    val condition = if (it.condition == "new") {
+                        "Condición producto: Nuevo"
+                    } else {
+                        "Condición producto ${it.condition}"
+                    }
+                    tvCondition.text = condition
                     if (it.freeShipping) {
                         val freeShipping = "FreeShipping"
                         tvFreeShiping.text = freeShipping
                     }
-                    val stateName = "Estado producto: ${it.stateName}"
+                    val stateName = "Departamento producto: ${it.stateName}"
                     tvStateName.text = stateName
                     val cityName = "Ciudad producto: ${it.cityName}"
                     tvCityName.text = cityName
@@ -153,7 +159,7 @@ class DetailProductFragment : Fragment() {
         viewModel.attributeDetail.observe(viewLifecycleOwner) {
             val sizePreviesList = listAttribute.size
             listAttribute.addAll(it)
-            adapter.notifyItemRangeInserted(sizePreviesList -1, it.size)
+            adapter.notifyItemRangeInserted(sizePreviesList - 1, it.size)
         }
     }
 }

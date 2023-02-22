@@ -15,7 +15,7 @@ class GetItemRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getDetailItemFromAPI(itemId: String): DetailItemModel {
-        return itemRemoteDataSource.getDetailItemsById(itemId).listDetailItem.first().toDetailItemModel()
+        return itemRemoteDataSource.getDetailItemsById(itemId).first().toDetailItemModel()
     }
 
     override suspend fun insertItemsToDataBase(item: Item) {

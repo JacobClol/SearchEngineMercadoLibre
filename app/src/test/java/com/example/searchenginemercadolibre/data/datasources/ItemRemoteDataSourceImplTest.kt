@@ -113,41 +113,39 @@ class ItemRemoteDataSourceImplTest {
             site_id = "MCO"
         )
 
-    private val aPIDetailItemResponseMock = APIDetailItemResponse(
-        listOf(
-            APIDetailItemResponseItem(
-                body = Body(
-                    attributes = listOf(
-                        APIAttribute(
-                            id = "ASPECT_RATIO",
-                            name = "Relación de aspecto",
-                            valueId = "String",
-                            valueName = "String",
-                            valueType = "16:10"
-                        )
-                    ),
-                    availableQuantity = 1,
-                    basePrice = 1,
-                    buyingMode = "String",
+    private val aPIDetailItemResponse = APIDetailItemResponse
+
+    private val aPIDetailItemResponseMock = APIDetailItemResponseItem(
+        body = Body(
+            attributes = listOf(
+                APIAttribute(
+                    id = "ASPECT_RATIO",
+                    name = "Relación de aspecto",
+                    valueId = "String",
+                    valueName = "String",
+                    valueType = "16:10"
+                )
+            ),
+            availableQuantity = 1,
+            basePrice = 1,
+            buyingMode = "String",
+            id = "String",
+            initialQuantity = 1,
+            listingType_id = "String",
+            permalink = "String",
+            pictures = listOf(
+                APIPicture(
                     id = "String",
-                    initialQuantity = 1,
-                    listingType_id = "String",
-                    permalink = "String",
-                    pictures = listOf(
-                        APIPicture(
-                            id = "String",
-                            maxSize = "500x293",
-                            secureUrl = "1017x596",
-                            size = "https://http2.mlstatic.com/D_801112-MLA46516512347_062021-O.jpg"
-                        )
-                    ),
-                    startTime = "String",
-                    stopTime = "String",
-                    title = "String"
-                ),
-                code = 1
-            )
-        )
+                    maxSize = "500x293",
+                    secureUrl = "1017x596",
+                    size = "https://http2.mlstatic.com/D_801112-MLA46516512347_062021-O.jpg"
+                )
+            ),
+            startTime = "String",
+            stopTime = "String",
+            title = "String"
+        ),
+        code = 1
     )
 
     @Before
@@ -183,9 +181,11 @@ class ItemRemoteDataSourceImplTest {
         runBlocking {
             //Given
             val itemIdMock = "MCO811601010"
+            aPIDetailItemResponse.add(aPIDetailItemResponseMock)
+
             coEvery {
                 itemRemoteDataSourceImpl.getDetailItemsById(itemIdMock)
-            } returns aPIDetailItemResponseMock
+            } returns aPIDetailItemResponse
 
             //When
             val response = itemRemoteDataSourceImpl.getDetailItemsById(itemIdMock)
@@ -194,6 +194,6 @@ class ItemRemoteDataSourceImplTest {
                 detailItemService.getDetailItem(itemIdMock)
             }
 
-            assert(response == aPIDetailItemResponseMock)
+            assert(response == aPIDetailItemResponse)
         }
 }

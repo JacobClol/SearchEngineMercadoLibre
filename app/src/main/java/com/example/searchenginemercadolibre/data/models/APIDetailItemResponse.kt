@@ -5,9 +5,7 @@ import com.example.searchenginemercadolibre.domain.models.DetailItemModel
 import com.example.searchenginemercadolibre.domain.models.PicturesModel
 import com.google.gson.annotations.SerializedName
 
-data class APIDetailItemResponse(
-    val listDetailItem: List<APIDetailItemResponseItem>
-)
+object APIDetailItemResponse : ArrayList<APIDetailItemResponseItem>()
 
 data class APIDetailItemResponseItem(
     val body: Body,
